@@ -32,3 +32,6 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
+
+    - name: Show ARM environment variables
+  run: env | grep ARM  
