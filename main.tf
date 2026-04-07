@@ -14,16 +14,20 @@ module "nsg" {
   source   = "./Modules/nsg"
   rg_name  = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
-  subnet_id = "/subscriptions/5a0855b9-426d-429e-83a9-ea7c4796e9a4/resourceGroups/terraform-demo-rg/providers/Microsoft.Network/virtualNetworks/demo-vnet/subnets/demo-subnet"
+  subnet_id = module.network.subnet_id
 }
 
+module "lb" {
+  source   = "./Modules/lb"
+  rg_name  = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+}
 
-module "vm" {
-  source    = "./Modules/vm"
-  rg_name   = azurerm_resource_group.rg.name
-  location  = azurerm_resource_group.rg.location
-  subnet_id = module.network.subnet_id
-  vm_count  = 2
+module "vmss" {
+  source           = "./Modules/vmss"
+  rg_name          = azurerm_resource_group.rg.name
+  location         = azurerm_resource_group.rg.location
+  subnet_id        = module.network.subnet_id
   backend_pool_id  = module.lb.backend_pool_id
 }
 
@@ -39,8 +43,3 @@ module "vm" {
 #   location            = var.location
 # }
 
-module "lb" {
-  source   = "./Modules/lb"
-  rg_name  = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-}
