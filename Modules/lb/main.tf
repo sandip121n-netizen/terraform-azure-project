@@ -41,3 +41,13 @@ resource "azurerm_lb_rule" "http_rule" {
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.backend_pool.id]
   probe_id                       = azurerm_lb_probe.http_probe.id
 }
+
+resource "azurerm_lb_rule" "ssh_rule" {
+  name                           = "ssh-rule"
+  loadbalancer_id                = azurerm_lb.lb.id
+  protocol                       = "Tcp"
+  frontend_port                  = 22
+  backend_port                   = 22
+  frontend_ip_configuration_name = "frontend-ip"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.backend_pool.id]
+}

@@ -31,6 +31,16 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     }
   }
 
+custom_data = base64encode(<<EOF
+#!/bin/bash
+apt-get update -y
+apt-get install -y nginx
+systemctl start nginx
+systemctl enable nginx
+echo "<h1>Welcome from VMSS 🚀</h1>" > /var/www/html/index.html
+EOF
+)
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
