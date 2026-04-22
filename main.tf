@@ -23,6 +23,13 @@ module "lb" {
   location = azurerm_resource_group.rg.location
 }
 
+module "peering" {
+  source   = "./Modules/peering"
+  location = azurerm_resource_group.rg.location
+  rg_name  = azurerm_resource_group.rg.name
+}
+
+
 module "vmss" {
   source           = "./Modules/vmss"
   rg_name          = azurerm_resource_group.rg.name
@@ -43,3 +50,12 @@ module "vmss" {
 #   location            = var.location
 # }
 
+
+
+
+module "vnet2resource" {
+  source              = "./Modules/vnet2resource"
+  location            = azurerm_resource_group.rg.location
+  rg_name             = azurerm_resource_group.rg.name
+  vnet_name  = module.peering.vnet2_name
+}
