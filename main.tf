@@ -58,4 +58,5 @@ module "vnet2resource" {
   location            = azurerm_resource_group.rg.location
   rg_name             = azurerm_resource_group.rg.name
   vnet_name  = module.peering.vnet2_name
+  nsg_id = module.nsg.nsg_id
 }

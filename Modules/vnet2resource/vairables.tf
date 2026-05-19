@@ -11,3 +11,9 @@ variable "location" {
 variable "vnet_name" {
   type = string
 }
+
+variable "nsg_id" {
+  description = "NSG ID to attach to NIC"
+  type        = string
+}
+

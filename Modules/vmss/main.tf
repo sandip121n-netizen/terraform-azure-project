@@ -33,11 +33,23 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
 
 custom_data = base64encode(<<EOF
 #!/bin/bash
+
 apt-get update -y
-apt-get install -y nginx
-systemctl start nginx
-systemctl enable nginx
-echo "<h1>Welcome from VMSS 🚀</h1>" > /var/www/html/index.html
+
+# Install dependencies
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+# Install Docker
+apt-get install -y docker.io
+
+# Enable Docker
+systemctl enable docker
+systemctl start docker
+
+# Pull and run nginx container
+docker pull nginx
+docker run -d -p 80:80 --name nginx-container nginx
+
 EOF
 )
 
